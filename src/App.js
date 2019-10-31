@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react"
+import React, { useState } from "react"
 import styled from "@emotion/styled"
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap"
 import { Input } from "./components/input"
@@ -14,7 +14,14 @@ export const App = () => {
     "paddingTopBottom": "5",
     "paddingLeftRight": "20",
     "fontSize": "16",
-    "lineHeight": "28"
+    "lineHeight": "28",
+    "marginBottom": "10"
+  })
+
+  const [activeButton, setActiveButton] = useState({
+    "button1": false,
+    "button2": false,
+    "button3": false,
   })
 
   const handleInputChange = (event) => {
@@ -34,6 +41,7 @@ export const App = () => {
         padding: ${buttonValues.paddingTopBottom}px ${buttonValues.paddingLeftRight}px !important;
         font-size: ${buttonValues.fontSize}px !important;
         line-height: ${buttonValues.lineHeight}px !important;
+        margin-bottom: ${buttonValues.marginBottom}px !important;
         width: 100% !important;
         cursor: pointer !important;
         position: relative !important;
@@ -71,144 +79,161 @@ export const App = () => {
     }, 1000, event.currentTarget)
   }
 
+  const buttonClick = (numberClicked) => {
+    setActiveButton(buttonValues => {
+      return ({...buttonValues, [`button${numberClicked}`]: !buttonValues[`button${numberClicked}`]})
+    })
+  }
+
   return (
-    <Fragment>
-      <Container>
-        <Row>
-          <Col lg={{ span: 6, offset: 3}} xs={12}>
-            <Card className="mt-3">
-              <Card.Body>
-              <Card.Title>Instapage Button Creator</Card.Title>
-                <div className="mb-3">
-                  <label>Preview:</label>
-                  <Card>
-                    <Card.Body>
-                      <PreviewButton buttonValues={buttonValues}>Button 1</PreviewButton>
-                      <PreviewButton buttonValues={buttonValues}>Button 2</PreviewButton>
-                      <PreviewButton className="mb-0" buttonValues={buttonValues}>Button 3</PreviewButton>
-                    </Card.Body>
-                  </Card>
-                </div>
-                <Form>
-                  <Form.Row>
-                    <Form.Group as={Col}>
-                      <Input
-                        label="Background Color"
-                        name="backgroundColor"
-                        type="color"
-                        buttonValues={buttonValues}
-                        handleInputChange={handleInputChange}
-                      />
-                    </Form.Group>
-                    <Form.Group as={Col}>
-                      <Input
-                        label="Selected Background Color"
-                        name="selectedBackgroundColor"
-                        type="color"
-                        buttonValues={buttonValues}
-                        handleInputChange={handleInputChange}
-                      />
-                    </Form.Group>
-                  </Form.Row>
-                  <Form.Row>
-                    <Form.Group as={Col}>
-                      <Input
-                        label="Text Color"
-                        name="textColor"
-                        type="color"
-                        buttonValues={buttonValues}
-                        handleInputChange={handleInputChange}
-                      />
-                    </Form.Group>
-                    <Form.Group as={Col}>
-                      <Input
-                        label="Border Color"
-                        name="borderColor"
-                        type="color"
-                        buttonValues={buttonValues}
-                        handleInputChange={handleInputChange}
-                      />
-                    </Form.Group>
-                  </Form.Row>
-                  <Form.Row>
-                    <Form.Group as={Col}>
-                      <Input
-                        label="Border Width"
-                        name="borderWidth"
-                        type="number"
-                        buttonValues={buttonValues}
-                        handleInputChange={handleInputChange}
-                      />
-                    </Form.Group>
-                    <Form.Group as={Col}>
-                      <Input
-                        label="Border Radius"
-                        name="borderRadius"
-                        type="number"
-                        buttonValues={buttonValues}
-                        handleInputChange={handleInputChange}
-                      />
-                    </Form.Group>
-                  </Form.Row>
-                  <Form.Row>
-                    <Form.Group as={Col}>
-                      <Input
-                        label="Padding Top/Bottom"
-                        name="paddingTopBottom"
-                        type="number"
-                        buttonValues={buttonValues}
-                        handleInputChange={handleInputChange}
-                      />
-                    </Form.Group>
-                    <Form.Group as={Col}>
-                      <Input
-                        label="Padding Left/Right"
-                        name="paddingLeftRight"
-                        type="number"
-                        buttonValues={buttonValues}
-                        handleInputChange={handleInputChange}
-                      />
-                    </Form.Group>
-                  </Form.Row>
-                  <Form.Row>
-                    <Form.Group as={Col}>
-                      <Input
-                        label="Font Size"
-                        name="fontSize"
-                        type="number"
-                        buttonValues={buttonValues}
-                        handleInputChange={handleInputChange}
-                      />
-                    </Form.Group>
-                    <Form.Group as={Col}>
-                      <Input
-                        label="Line Height"
-                        name="lineHeight"
-                        type="number"
-                        buttonValues={buttonValues}
-                        handleInputChange={handleInputChange}
-                      />
-                    </Form.Group>
-                  </Form.Row>
-                </Form>
-                <Button variant="success" block onClick={copyToClipboard}>Create snippet</Button>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-    </Fragment>
+    <Container>
+      <Row>
+        <Col lg={{ span: 6, offset: 3}} xs={12}>
+          <Card className="mt-3 mb-3">
+            <Card.Body>
+            <Card.Title>Instapage Button Creator</Card.Title>
+              <div className="mb-3">
+                <label>Preview:</label>
+                <Card>
+                  <Card.Body>
+                    <PreviewButton activeButton={activeButton.button1} onClick={() => buttonClick(1)} buttonValues={buttonValues}>Button 1</PreviewButton>
+                    <PreviewButton activeButton={activeButton.button2} onClick={() => buttonClick(2)} buttonValues={buttonValues}>Button 2</PreviewButton>
+                    <PreviewButton activeButton={activeButton.button3} onClick={() => buttonClick(3)} className="mb-0" buttonValues={buttonValues}>Button 3</PreviewButton>
+                  </Card.Body>
+                </Card>
+              </div>
+              <Form>
+                <Form.Row>
+                  <Form.Group as={Col}>
+                    <Input
+                      label="Background Color"
+                      name="backgroundColor"
+                      type="color"
+                      buttonValues={buttonValues}
+                      handleInputChange={handleInputChange}
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col}>
+                    <Input
+                      label="Selected Background Color"
+                      name="selectedBackgroundColor"
+                      type="color"
+                      buttonValues={buttonValues}
+                      handleInputChange={handleInputChange}
+                    />
+                  </Form.Group>
+                </Form.Row>
+                <Form.Row>
+                  <Form.Group as={Col}>
+                    <Input
+                      label="Text Color"
+                      name="textColor"
+                      type="color"
+                      buttonValues={buttonValues}
+                      handleInputChange={handleInputChange}
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col}>
+                    <Input
+                      label="Border Color"
+                      name="borderColor"
+                      type="color"
+                      buttonValues={buttonValues}
+                      handleInputChange={handleInputChange}
+                    />
+                  </Form.Group>
+                </Form.Row>
+                <Form.Row>
+                  <Form.Group as={Col}>
+                    <Input
+                      label="Border Width"
+                      name="borderWidth"
+                      type="number"
+                      buttonValues={buttonValues}
+                      handleInputChange={handleInputChange}
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col}>
+                    <Input
+                      label="Border Radius"
+                      name="borderRadius"
+                      type="number"
+                      buttonValues={buttonValues}
+                      handleInputChange={handleInputChange}
+                    />
+                  </Form.Group>
+                </Form.Row>
+                <Form.Row>
+                  <Form.Group as={Col}>
+                    <Input
+                      label="Padding Top/Bottom"
+                      name="paddingTopBottom"
+                      type="number"
+                      buttonValues={buttonValues}
+                      handleInputChange={handleInputChange}
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col}>
+                    <Input
+                      label="Padding Left/Right"
+                      name="paddingLeftRight"
+                      type="number"
+                      buttonValues={buttonValues}
+                      handleInputChange={handleInputChange}
+                    />
+                  </Form.Group>
+                </Form.Row>
+                <Form.Row>
+                  <Form.Group as={Col}>
+                    <Input
+                      label="Font Size"
+                      name="fontSize"
+                      type="number"
+                      buttonValues={buttonValues}
+                      handleInputChange={handleInputChange}
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col}>
+                    <Input
+                      label="Line Height"
+                      name="lineHeight"
+                      type="number"
+                      buttonValues={buttonValues}
+                      handleInputChange={handleInputChange}
+                    />
+                  </Form.Group>
+                </Form.Row>
+                <Form.Row>
+                  <Form.Group as={Col}>
+                    <Input
+                      label="Margin Bottom"
+                      name="marginBottom"
+                      type="number"
+                      buttonValues={buttonValues}
+                      handleInputChange={handleInputChange}
+                    />
+                  </Form.Group>
+                </Form.Row>
+              </Form>
+              <Button variant="success" block onClick={copyToClipboard}>Create snippet</Button>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   )
 }
 
 const PreviewButton = styled.label`
   background-color: ${props => props.buttonValues.backgroundColor};
+  ${props => props.activeButton && `background-color: ${props.buttonValues.selectedBackgroundColor}`};
   color: ${props => props.buttonValues.textColor};
   border: ${props => props.buttonValues.borderWidth}px solid ${props => props.buttonValues.borderColor};
   border-radius: ${props => props.buttonValues.borderRadius}px;
   padding: ${props => props.buttonValues.paddingTopBottom}px ${props => props.buttonValues.paddingLeftRight}px;
   font-size: ${props => props.buttonValues.fontSize}px;
   line-height: ${props => props.buttonValues.lineHeight}px;
+  margin-bottom: ${props => props.buttonValues.marginBottom}px;
   width: 100%;
   cursor: pointer;
   position: relative;
